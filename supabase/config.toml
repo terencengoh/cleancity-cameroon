@@ -1,0 +1,54 @@
+# Supabase CLI config for CleanCity Cameroon. Only values this project changes; the rest are CLI defaults.
+# Docs: https://supabase.com/docs/guides/local-development/cli/config
+project_id = "cleancity-cameroon"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 17
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[storage]
+enabled = true
+file_size_limit = "2MiB"
+
+[auth]
+enabled = true
+site_url = "cleancity://"
+additional_redirect_urls = ["cleancity://*", "http://localhost:5173"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.sms]
+enable_signup = true
+enable_confirmations = true
+template = "Ville Propre / CleanCity : votre code / your code {{ .Code }}"
+max_frequency = "60s"
+
+# Local testing without an SMS provider: these numbers always receive the given OTP.
+[auth.sms.test_otp]
+237677000001 = "123456"
+237699000002 = "123456"
+
+[edge_runtime]
+enabled = true
+policy = "per_worker"
+deno_version = 2
+
+[functions.payouts-process]
+verify_jwt = false # called by pg_cron with the service-role key; the function checks it itself
+
+[functions.notify]
+verify_jwt = false
+
+[functions.payouts-webhook]
+verify_jwt = false # providers call it; authenticity is checked by signature
