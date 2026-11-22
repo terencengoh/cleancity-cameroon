@@ -1,0 +1,50 @@
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["mobile/**", "admin/**", "supabase/**", "docs/**", "tests/**", "*.md", ".github/workflows/ci.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Test demo rules
+        run: node --test tests/*.test.mjs
+      - name: Build site into _site (static demo files only)
+        run: |
+          mkdir -p _site
+          cp index.html styles.css logic.js data.js i18n.js app.js sw.js icon.svg manifest.webmanifest _site/
+          base64 -d icon-192.b64 > _site/icon-192.png
+          base64 -d icon-512.b64 > _site/icon-512.png
+          touch _site/.nojekyll
+          ls -la _site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
