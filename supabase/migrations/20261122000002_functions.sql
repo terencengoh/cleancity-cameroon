@@ -590,7 +590,7 @@ end $$;
 
 -- ---------- notifications (service role only: notify Edge Function) ----------
 create or replace function public.claim_notifications(p_limit int default 100)
-returns table (id uuid, user_id uuid, title text, body text, data jsonb, tokens text[])
+returns table (id uuid, user_id uuid, kind text, title text, body text, data jsonb, tokens text[])
 language plpgsql security definer set search_path = public as $$
 begin
   if not public.is_service() then raise exception 'service only' using errcode = '42501'; end if;
@@ -599,7 +599,7 @@ begin
     update public.notifications n set attempts = attempts + 1
     where n.id in (select x.id from public.notifications x where x.status = 'pending' and x.attempts < 5 order by x.created_at limit p_limit for update skip locked)
     returning n.*)
-  select c.id, c.user_id, c.title, c.body, c.data, coalesce((select array_agg(t.token) from public.push_tokens t where t.user_id = c.user_id), '{}') from c;
+  select c.id, c.user_id, c.kind, c.title, c.body, c.data, coalesce((select array_agg(t.token) from public.push_tokens t where t.user_id = c.user_id), '{}') from c;
 end $$;
 
 create or replace function public.mark_notification(p_id uuid, p_status text, p_error text default null) returns void
