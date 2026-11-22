@@ -1,0 +1,9 @@
+{
+  "compilerOptions": { "strict": true },
+  "lint": { "rules": { "tags": ["recommended"] } },
+  "fmt": { "lineWidth": 140 },
+  "tasks": {
+    "check": "deno check */index.ts tests/*.ts",
+    "test": "deno test --allow-read tests/"
+  }
+}
