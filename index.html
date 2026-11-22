@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CleanCity Cameroon / Ville Propre Cameroun — demo</title>
+  <meta name="description" content="Demo prototype: weekly paid Saturday clean-ups in Cameroon — sign-up by region and city, fair selection, supervisor sign-off, mobile money payouts (simulated).">
+  <meta name="theme-color" content="#007a3d">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><img src="icon.svg" alt="" width="40" height="40"><div><h1 id="title">CleanCity Cameroon</h1><p id="tagline"></p></div></div>
+    <button id="lang" class="btn small" type="button">English</button>
+  </header>
+  <div id="banner" class="banner" role="note"></div>
+  <nav class="tabs">
+    <button data-tab="join" type="button"></button><button data-tab="supervisor" type="button"></button>
+    <button data-tab="admin" type="button"></button><button data-tab="how" type="button"></button>
+  </nav>
+  <main id="view"></main>
+  <footer><span>CleanCity Cameroon · Ville Propre Cameroun — demo</span> · <a href="https://github.com/terencengoh/cleancity-cameroon">GitHub</a></footer>
+  <script src="logic.js"></script>
+  <script src="data.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});</script>
+</body>
+</html>
