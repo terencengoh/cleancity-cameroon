@@ -25,6 +25,24 @@ jobs:
           node-version: 22
       - run: node --test tests/*.test.mjs
 
+  admin:
+    name: Admin dashboard (typecheck + lint + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+
   database:
     name: Database (migrations + seed + RPC/RLS tests on PGlite)
     runs-on: ubuntu-latest
