@@ -3,7 +3,7 @@ name: Deploy demo to GitHub Pages
 on:
   push:
     branches: [main]
-    paths-ignore: ["mobile/**", "admin/**", "supabase/**", "docs/**", "tests/**", "*.md", ".github/workflows/ci.yml"]
+    paths-ignore: ["mobile/**", "admin/**", "supabase/**", "docs/**", "*.md", ".gitignore", ".github/workflows/ci.yml"]
   workflow_dispatch:
 
 permissions:
